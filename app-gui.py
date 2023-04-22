@@ -14,7 +14,7 @@ logo = tk.PhotoImage(file="top-secret2.png")
 canvas.create_image((180,100),image=logo)
 
 #?variables
-label_font = "Arial 13 normal"
+label_font = "Calibri 12 bold"
 
 #? labels and entrys
 title_frame = tk.Frame(pady=5)
