@@ -4,13 +4,8 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-# # Kullanıcıdan şifreyi girmesini iste
-# password = input("Şifreyi girin: ").encode()
-
-# # Rastgele bir salt oluştur
-# salt = os.urandom(16)
-
-# # PBKDF2HMAC algoritması ile anahtar türetme
+# password = b"password"
+# salt = bytes(16)
 # kdf = PBKDF2HMAC(
 #     algorithm=hashes.SHA256(),
 #     length=32,
@@ -19,32 +14,47 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 # )
 # key = base64.urlsafe_b64encode(kdf.derive(password))
 # f = Fernet(key)
-
-# # Şifrelenecek metni kullanıcıdan girmesini iste
-# metin = input("Şifrelenecek metni girin: ").encode()
-
-# # Metni şifrele
-# token = f.encrypt(metin)
-# print("Şifrelenmiş metin: ", token)
-
-# # Şifreyi çöz ve orijinal metni göster
-
-# decrypted_metin = f.decrypt(token).decode()
-# print("Çözülmüş metin: ", decrypted_metin)
+# a = bytes(b"gAAAAABkREQQI7MgvAfc2nYXrA-sOPTiF3UbNk5FjtaOqmnmqi1AL-droMAeiQGar2tnfjpqVE_a0DetF2HFN2z6cfELmd2R3Q==")
+# print(f.decrypt(a))
 
 
-def encrypt_text(title,secret_note,password):
+#* encrypt func
+def encrypt_text(title,secret_note,password_input):
     #? title
     with open(file="notes.txt",mode="a") as a:
         a.write(title + "\n")
 
-    # Kullanıcıdan şifreyi girmesini iste
-    password = password.encode()
+    def encrypt():
+        # Kullanıcıdan şifreyi girmesini iste
+        password = password_input.encode()
+        # Rastgele bir salt oluştur
+        salt = bytes(16)
+        # PBKDF2HMAC algoritması ile anahtar türetme
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=480000,
+        )
+        key = base64.urlsafe_b64encode(kdf.derive(password))
+        f = Fernet(key)
+        # Şifrelenecek metni kullanıcıdan girmesini iste
+        metin = secret_note.encode()
+        # Metni şifrele
+        token = f.encrypt(metin)
+        token = str(token)
+        return token
 
-    # Rastgele bir salt oluştur
-    salt = os.urandom(16)
+    #? write encrypted text
+    with open(file="notes.txt",mode="a") as b:
+        b.write(encrypt() + "\n \n")
 
-    # PBKDF2HMAC algoritması ile anahtar türetme
+
+#* decrypt func
+def decrypt_text(secret_note,password_input):
+
+    password = password_input.encode()
+    salt = bytes(16)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -53,16 +63,6 @@ def encrypt_text(title,secret_note,password):
     )
     key = base64.urlsafe_b64encode(kdf.derive(password))
     f = Fernet(key)
+    a = bytes(secret_note.encode())
+    return f.decrypt(a)
 
-    # Şifrelenecek metni kullanıcıdan girmesini iste
-    metin = secret_note.encode()
-
-    # Metni şifrele
-    token = f.encrypt(metin)
-
-    #? write encrypted text
-    with open(file="notes.txt",mode="a") as b:
-        token = str(token)
-        b.write(token + "\n")
-
-encrypt_text("merhaabaa","çok gizli notumm şş","mypassword")
