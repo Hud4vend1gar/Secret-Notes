@@ -1,5 +1,6 @@
 import tkinter as tk
 from PIL import Image
+#import cryptographyy
 
 
 screen = tk.Tk()
@@ -43,6 +44,11 @@ encrypt_button = tk.Button(text="Save & Encrypt",font="Arial 10 normal")
 decrypt_button = tk.Button(text="Decrypt",font="Arial 10 normal")
 encrypt_button.pack(pady=5)
 decrypt_button.pack()
+
+
+#? functions
+
+
 
 
 tk.mainloop()
