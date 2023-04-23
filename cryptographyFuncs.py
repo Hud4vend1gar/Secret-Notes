@@ -19,6 +19,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
 #* encrypt func
+
 def encrypt_text(title,secret_note,password_input):
     #? title
     with open(file="notes.txt",mode="a") as a:

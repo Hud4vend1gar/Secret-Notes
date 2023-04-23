@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image
-import cryptographyFuncs
+from cryptographyFuncs import *
 
 screen = tk.Tk()
 screen.minsize(360,600)
@@ -12,6 +12,19 @@ def save_encrypt():
     text_title = title_entry.get()
     text_note = secret_entry.get(1.0,tk.END)
     text_password = key_entry.get()
+    encrypt_text(text_title,text_note,text_password)
+    title_entry.delete(first=0,last=tk.END)
+    secret_entry.delete(1.0,tk.END)
+    key_entry.delete(first=0,last=tk.END)
+
+def decrypt_command():
+    token = secret_entry.get(1.0,tk.END)
+    password = key_entry.get()
+    decrypted_text = decrypt_text(token,password)
+    key_entry.delete(first=0,last=tk.END)  
+    secret_entry.delete(1.0,tk.END)  
+    title_entry.delete(first=0,last=tk.END)
+    secret_entry.insert(1.0,decrypted_text)
     
 
 #? top-secret img
@@ -47,7 +60,7 @@ key_entry.pack()
 
 #? buttons
 encrypt_button = tk.Button(text="Save & Encrypt",font="Arial 10 normal",command=save_encrypt)
-decrypt_button = tk.Button(text="Decrypt",font="Arial 10 normal")
+decrypt_button = tk.Button(text="Decrypt",font="Arial 10 normal",command=decrypt_command)
 encrypt_button.pack(pady=5)
 decrypt_button.pack()
 
