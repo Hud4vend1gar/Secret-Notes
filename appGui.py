@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image
 from cryptographyFuncs import *
 
@@ -12,19 +13,29 @@ def save_encrypt():
     text_title = title_entry.get()
     text_note = secret_entry.get(1.0,tk.END)
     text_password = key_entry.get()
-    encrypt_text(text_title,text_note,text_password)
-    title_entry.delete(first=0,last=tk.END)
-    secret_entry.delete(1.0,tk.END)
-    key_entry.delete(first=0,last=tk.END)
+
+    #? check information
+    if len(text_note) < 1 or len(text_title) < 1 or len(text_password) < 1:
+        messagebox.showerror(title="Error",message="Please enter all information")
+    else:
+        encrypt_text(text_title,text_note,text_password)
+        title_entry.delete(first=0,last=tk.END)
+        secret_entry.delete(1.0,tk.END)
+        key_entry.delete(first=0,last=tk.END)
+
 
 def decrypt_command():
     token = secret_entry.get(1.0,tk.END)
     password = key_entry.get()
-    decrypted_text = decrypt_text(token,password)
-    key_entry.delete(first=0,last=tk.END)  
-    secret_entry.delete(1.0,tk.END)  
-    title_entry.delete(first=0,last=tk.END)
-    secret_entry.insert(1.0,decrypted_text)
+    try:
+        decrypted_text = decrypt_text(token,password)
+        key_entry.delete(first=0,last=tk.END)  
+        secret_entry.delete(1.0,tk.END)  
+        title_entry.delete(first=0,last=tk.END)
+        secret_entry.insert(1.0,decrypted_text)
+    except:
+        messagebox.showerror(title="Error",message="Please make sure of encrypted info !")
+
     
 
 #? top-secret img
