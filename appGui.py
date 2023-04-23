@@ -1,12 +1,18 @@
 import tkinter as tk
 from PIL import Image
-#import cryptographyy
-
+import cryptographyFuncs
 
 screen = tk.Tk()
 screen.minsize(360,600)
 screen.maxsize(360,600)
 screen.title("Secret Notes")
+
+#? functions
+def save_encrypt():
+    text_title = title_entry.get()
+    text_note = secret_entry.get(1.0,tk.END)
+    text_password = key_entry.get()
+    
 
 #? top-secret img
 canvas = tk.Canvas(screen, width=360,height=200)
@@ -40,15 +46,10 @@ key_label.pack()
 key_entry.pack()
 
 #? buttons
-encrypt_button = tk.Button(text="Save & Encrypt",font="Arial 10 normal")
+encrypt_button = tk.Button(text="Save & Encrypt",font="Arial 10 normal",command=save_encrypt)
 decrypt_button = tk.Button(text="Decrypt",font="Arial 10 normal")
 encrypt_button.pack(pady=5)
 decrypt_button.pack()
-
-
-#? functions
-
-
 
 
 tk.mainloop()
